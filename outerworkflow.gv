@@ -1,0 +1,33 @@
+digraph Workflow {
+rankdir=TB
+fontname=Courier; fontsize=18; labelloc=t
+label=farmers_market_cleaning
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+"FarmersMarketFinalClean.ipynb"
+"FarmersMarketFinalIntegrityCheck.ipynb"
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+"farmers_market_final.csv"
+"farmers_markets.csv"
+"farmers_market_all_cols.csv"
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+"FarmersMarketFinalClean.ipynb" -> "farmers_market_all_cols.csv"
+"FarmersMarketFinalClean.ipynb" -> "farmers_market_final.csv"
+"FarmersMarketFinalClean.ipynb" -> "farmers_market_gps_repaired.csv"
+"farmers_markets.csv" -> "FarmersMarketFinalClean.ipynb"
+"farmers_market_all_cols.csv" -> "FarmersMarketFinalIntegrityCheck.ipynb"
+}}
+subgraph cluster_input_ports_group_outer { label=""; color=white
+subgraph cluster_input_ports_group_inner { label=""; color=white
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+"farmers_markets.csv_input_port" [label=""]
+}}
+subgraph cluster_output_ports_group_outer { label=""; color=white
+subgraph cluster_output_ports_group_inner { label=""; color=white
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+"farmers_market_final.csv_output_port" [label=""]
+}}
+"farmers_markets.csv_input_port" -> "farmers_markets.csv"
+"farmers_market_final.csv" -> "farmers_market_final.csv_output_port"
+}
