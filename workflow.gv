@@ -1,0 +1,177 @@
+digraph Workflow {
+rankdir=TB
+fontname=Courier; fontsize=18; labelloc=t
+label=farmers_market_cleaning
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+csv_to_dataframe
+drop_duplicates
+columns
+to_datetime
+get_year
+make_address
+address_to_coords
+final_coordinates
+split_dates
+append_year
+fix_start_date
+fix_end_date
+add_date_unknown
+split_days
+split_times
+standardize_time
+add_time_unknown
+make_payment_list
+make_product_list
+dataframe
+dataframe_to_csv
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+"farmers_market_final.csv"
+"farmers_markets.csv"
+fm_data
+fm_data_no_duplicates
+updateTime
+updateTimeStamp
+street
+city
+State
+zip
+address
+x
+y
+geolatitude
+geolongitude
+"Season1..4Date"
+"Season1..4StartDateRough"
+"Season1..4EndDateRough"
+updateYear
+"Season1..4StartDateRoughYear"
+"Season1..4EndDateRoughYear"
+"Season1..4StartDate'"
+"Season1..4EndDate'"
+"Season1..4Time"
+"Season1..4Sun..SatTime"
+"Season1..4Sun..SatStartTimeRough"
+"Season1..4Sun..SatEndTimeRough"
+"Season1..4Sun..SatStartTime'"
+"Season1..4Sun..SatEndTime'"
+PaymentColumns
+ProductColumns
+FMID
+MarketName
+SocialMediaColumns
+latitude
+longitude
+"Season1..4StartDate"
+"Season1..4EndDate"
+"Season1..4Sun..SatStartTime"
+"Season1..4Sun..SatEndTime"
+PaymentList
+ProductList
+fm_data_final
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+csv_to_dataframe -> fm_data
+"farmers_markets.csv" -> csv_to_dataframe
+drop_duplicates -> fm_data_no_duplicates
+fm_data -> drop_duplicates
+columns -> FMID
+columns -> MarketName
+columns -> SocialMediaColumns
+columns -> updateTime
+columns -> street
+columns -> city
+columns -> State
+columns -> zip
+columns -> x
+columns -> y
+columns -> "Season1..4Date"
+columns -> "Season1..4Time"
+columns -> PaymentColumns
+columns -> ProductColumns
+fm_data_no_duplicates -> columns
+to_datetime -> updateTimeStamp
+updateTime -> to_datetime
+datetime -> to_datetime
+get_year -> updateYear
+updateTimeStamp -> get_year
+make_address -> address
+street -> make_address
+city -> make_address
+State -> make_address
+zip -> make_address
+address_to_coords -> geolatitude
+address_to_coords -> geolongitude
+geocoder -> address_to_coords
+address -> address_to_coords
+final_coordinates -> latitude
+final_coordinates -> longitude
+x -> final_coordinates
+y -> final_coordinates
+geolatitude -> final_coordinates
+geolongitude -> final_coordinates
+split_dates -> "Season1..4StartDateRough"
+split_dates -> "Season1..4EndDateRough"
+"Season1..4Date" -> split_dates
+append_year -> "Season1..4StartDateRoughYear"
+"Season1..4StartDateRough" -> append_year
+append_year -> "Season1..4EndDateRoughYear"
+"Season1..4EndDateRough" -> append_year
+updateYear -> append_year
+fix_start_date -> "Season1..4StartDate'"
+"Season1..4StartDateRoughYear" -> fix_start_date
+"datetime.date" -> fix_start_date
+fix_end_date -> "Season1..4EndDate'"
+"Season1..4EndDateRoughYear" -> fix_end_date
+"datetime.date" -> fix_end_date
+add_date_unknown -> "Season1..4StartDate"
+add_date_unknown -> "Season1..4EndDate"
+"Season1..4StartDate'" -> add_date_unknown
+"Season1..4EndDate'" -> add_date_unknown
+split_days -> "Season1..4Sun..SatTime"
+"Season1..4Time" -> split_days
+split_times -> "Season1..4Sun..SatStartTimeRough"
+split_times -> "Season1..4Sun..SatEndTimeRough"
+"Season1..4Sun..SatTime" -> split_times
+standardize_time -> "Season1..4Sun..SatStartTime'"
+"Season1..4Sun..SatStartTimeRough" -> standardize_time
+standardize_time -> "Season1..4Sun..SatEndTime'"
+"Season1..4Sun..SatEndTimeRough" -> standardize_time
+add_time_unknown -> "Season1..4Sun..SatStartTime"
+add_time_unknown -> "Season1..4Sun..SatEndTime"
+"Season1..4Sun..SatStartTime'" -> add_time_unknown
+"Season1..4Sun..SatEndTime'" -> add_time_unknown
+make_payment_list -> PaymentList
+PaymentColumns -> make_payment_list
+make_product_list -> ProductList
+ProductColumns -> make_product_list
+dataframe -> fm_data_final
+FMID -> dataframe
+MarketName -> dataframe
+SocialMediaColumns -> dataframe
+updateTimeStamp -> dataframe
+address -> dataframe
+latitude -> dataframe
+longitude -> dataframe
+"Season1..4StartDate" -> dataframe
+"Season1..4EndDate" -> dataframe
+"Season1..4Sun..SatStartTime" -> dataframe
+"Season1..4Sun..SatEndTime" -> dataframe
+PaymentList -> dataframe
+ProductList -> dataframe
+dataframe_to_csv -> "farmers_market_final.csv"
+fm_data_final -> dataframe_to_csv
+}}
+subgraph cluster_input_ports_group_outer { label=""; color=white
+subgraph cluster_input_ports_group_inner { label=""; color=white
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+"farmers_markets.csv_input_port" [label=""]
+}}
+subgraph cluster_output_ports_group_outer { label=""; color=white
+subgraph cluster_output_ports_group_inner { label=""; color=white
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+"farmers_market_final.csv_output_port" [label=""]
+}}
+"farmers_markets.csv_input_port" -> "farmers_markets.csv"
+"farmers_market_final.csv" -> "farmers_market_final.csv_output_port"
+}
